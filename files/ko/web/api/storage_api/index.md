@@ -7,13 +7,11 @@ browser-compat: api.StorageManager
 
 {{securecontext_header}}{{DefaultAPISidebar("Storage")}} {{AvailableInWorkers}}
 
-[Storage Standard](https://storage.spec.whatwg.org) 문서에는 웹사이트가 사용자의 브라우저에 데이터를 저장하는 데 사용할 수 있는 모든 API 및 기술에 적용되는 공유 저장소 시스템의 정의를 다루고 있습니다.
+[Storage 규격](https://storage.spec.whatwg.org) 문서에는 웹사이트가 사용자의 브라우저에 데이터를 저장하는 데 사용할 수 있는 모든 API 및 기술에 적용되는 공유 저장소 시스템의 정의를 다루고 있습니다.
 
-저장소 표준에 의해 관리되는 웹사이트의 데이터에는 일반적으로 [IndexedDB databases](/ko/docs/Web/API/IndexedDB_API) 및 [Cache API data](/ko/docs/Web/API/Cache)가 포함되지만, [Web Storage API data](/ko/docs/Web/API/Web_Storage_API)와 같은 다른 유형의 사이트 접근 가능한 데이터도 포함될 수 있습니다.
+Storage 규격에 따라 관리되는 웹사이트의 데이터에는 일반적으로 [IndexedDB 데이터베이스](/ko/docs/Web/API/IndexedDB_API) 및 [Cache API 데이터](/ko/docs/Web/API/Cache)가 포함되지만, [Web Storage API 데이터](/ko/docs/Web/API/Web_Storage_API)와 같은 다른 유형의 사이트 접근 가능한 데이터도 포함될 수 있습니다.
 
 저장소 API는 웹사이트에게 사용할 수 있는 공간의 양, 이미 사용 중인 양 및 데이터를 확보하기 위해 다른 데이터를 만들기 위해 {{Glossary("user agent")}}가 데이터를 삭제하기 전에 알림을 받아야 하는지 여부를 제어하는 기능을 제공합니다.
-
-The data stored for a website which is managed by the Storage Standard usually includes [IndexedDB databases](/ko/docs/Web/API/IndexedDB_API) and [Cache API data](/ko/docs/Web/API/Cache), but may include other kind of site-accessible data such as [Web Storage API data](/ko/docs/Web/API/Web_Storage_API).
 
 The Storage API gives websites the ability to find out how much space they can use, how much they are already using, and even control whether or not they need to be alerted before the {{Glossary("user agent")}} disposes of data in order to make room for other things.
 
