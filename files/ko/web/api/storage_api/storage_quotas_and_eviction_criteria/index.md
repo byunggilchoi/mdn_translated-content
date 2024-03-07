@@ -6,27 +6,27 @@ page-type: guide
 
 {{DefaultAPISidebar("Storage")}}
 
-Web developers can use a number of technologies to store data in the user's browser (i.e., on the local disk of the device the user is using to view the website).
+웹 개발자는 다양한 기술을 사용하여 사용자의 브라우저(예를 들어, 사용자가 웹 사이트를 보는 데 사용하는 장치의 로컬 디스크)에 데이터를 저장할 수 있습니다.
 
-The amount of data browsers allow websites to store and the mechanisms they use to delete data when that limit is reached differs between browsers.
+웹사이트가 브라우저에 저장할 수 있는 데이터의 양과 해당 한도에 도달했을 때 데이터를 삭제하는 데 사용하는 메커니즘은 브라우저마다 다릅니다.
 
-This article describes the web technologies that can be used to store data, the quotas that browsers have in place to limit websites from storing too much data, and the mechanisms they use to delete data when needed.
+이 문서에서는 데이터를 저장하는 데 사용할 수 있는 웹 기술, 웹 사이트에서 너무 많은 데이터를 저장하지 못하도록 제한하기 위해 브라우저가 설정한 할당량, 필요할 때 데이터를 삭제하는 데 사용하는 메커니즘에 대해 설명합니다.
 
-## How do browsers separate data from different websites?
+## 브라우저가 다른 웹사이트의 데이터를 어떻게 분리합니까?
 
-Browsers store the data from websites in different places, also called buckets, to reduce the risk of users being tracked across the web. In most cases, browsers manage stored data _per origin_.
+브라우저는 웹을 넘어 사용자가 추적될 위험을 줄이기 위해 버킷이라고도 하는 다양한 위치에 웹사이트의 데이터를 저장합니다. 대부분의 경우 브라우저는 _origin 별로_ 저장된 데이터를 관리합니다.
 
-The term _{{Glossary("origin")}}_ is therefore important to understand this article. An origin is defined by a scheme (such as HTTPS), a hostname, and a port. For example, `https://example.com` and `https://example.com/app/index.html` belong to the same origin because they have the same scheme (`https`), hostname (`example.com`), and default port.
+따라서 _{{Glossary("origin")}}_이라는 용어는 이 문서를 이해하는 데 중요합니다. origin은 스키마(예: HTTPS), 호스트네임 그리고 포트로 정의됩니다. 예를 들어 `https://example.com`과 `https://example.com/app/index.html`은 동일한 스키마(`https`), 호스트네임(`example.html`) 그리고 기본 포트를 갖기 때문에 동일한 origin에 속합니다.
 
-The quotas and eviction criteria described in this article apply to an entire origin, even if this origin is used to run several websites, such as `https://example.com/site1/` and `https://example.com/site2/`.
+이 문서에 설명된 할당량 및 제거 기준은 `https://example.com/site1/` 및 `https://example.com/site2`와 같이 여러 웹사이트를 실행하는 데 하나의 origin이 사용되는 경우에도 전체 origin에 적용됩니다.
 
-In some cases, however, browsers can decide to further separate the data stored by an origin in different partitions, for example in cases where an origin is loaded within an {{HTMLElement('iframe')}} element in multiple different third-party origins. However, for simplicity reasons, this article assumes that data is always stored per origin.
+그러나 경우에 따라 브라우저는 하나의 origin이 저장한 데이터를 여러 다른 파티션에 분리하기로 결정할 수도 있습니다. 예를 들어 여러 써드파티 origin들의 {{HTMLElement('iframe')}} 요소 내에 한 origin이 불러지는 경우입니다. 그러나 단순화를 위해 이 문서에서는 데이터가 항상 origin 별로 저장된다고 가정합니다.
 
-## What technologies store data in the browser?
+## 브라우저에 데이터를 저장하는 기술은 무엇입니까?
 
-Web developers can use the following web technologies to store data in the browser:
+웹 개발자는 다음 웹 기술을 사용하여 브라우저에 데이터를 저장할 수 있습니다:
 
-| Technology                                                                                          | Description                                                                                                                                                                                                                       |
+| 기술                                                                                                 | 설명                                                                                                                                                                                                                       |
 | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [Cookies](/en-US/docs/Web/HTTP/Cookies)                                                             | An HTTP cookie is a small piece of data that the web server and browser send each other to remember stateful information across page navigation.                                                                                  |
 | [Web Storage](/en-US/docs/Web/API/Web_Storage_API)                                                  | The Web Storage API provides mechanisms for webpages to store string-only key/value pairs, including [`localStorage`](/en-US/docs/Web/API/Window/localStorage) and [`sessionStorage`](/en-US/docs/Web/API/Window/sessionStorage). |
@@ -36,7 +36,7 @@ Web developers can use the following web technologies to store data in the brows
 
 Note that, in addition to the above, browsers will store other types of data in the browser for an origin, such as [WebAssembly](/en-US/docs/WebAssembly) code caching.
 
-## Does browser-stored data persist?
+## 브라우저에 저장된 데이터가 유지됩니까?
 
 Data for an origin can be stored in two ways in a browser, _persistent_ and _best-effort_:
 
@@ -57,7 +57,7 @@ Note that [research from the Chrome team](https://web.dev/articles/persistent-st
 
 Note that in private browsing mode (also called _Incognito_ in Chrome, and _InPrivate_ in Edge), browsers may apply different quotas, and stored data is usually deleted when the private browsing mode ends.
 
-## How much data can be stored?
+## 얼마나 많은 데이터를 저장할 수 있습니까?
 
 ### Cookies
 
@@ -127,7 +127,7 @@ Attempting to store more than an origin's quota using IndexedDB, Cache, or OPFS,
 
 Web developers should wrap JavaScript that writes to browser storage within {{jsxref("Statements/try...catch","try...catch")}} blocks. Freeing up space by deleting data before storing new data is also recommended.
 
-## When is data evicted?
+## 데이터는 언제 제거됩니까?
 
 Data eviction is the process by which a browser deletes an origin's stored data.
 
