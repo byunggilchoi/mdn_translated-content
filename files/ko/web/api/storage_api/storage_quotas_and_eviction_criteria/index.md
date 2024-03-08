@@ -28,142 +28,142 @@ page-type: guide
 
 | 기술                                                                                                 | 설명                                                                                                                                                                                                                       |
 | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [Cookies](/en-US/docs/Web/HTTP/Cookies)                                                             | An HTTP cookie is a small piece of data that the web server and browser send each other to remember stateful information across page navigation.                                                                                  |
-| [Web Storage](/en-US/docs/Web/API/Web_Storage_API)                                                  | The Web Storage API provides mechanisms for webpages to store string-only key/value pairs, including [`localStorage`](/en-US/docs/Web/API/Window/localStorage) and [`sessionStorage`](/en-US/docs/Web/API/Window/sessionStorage). |
-| [IndexedDB](/en-US/docs/Web/API/IndexedDB_API)                                                      | IndexedDB is a Web API for storing large data structures in the browser and indexing them for high-performance searching.                                                                                                         |
-| [Cache API](/en-US/docs/Web/API/Cache)                                                              | The Cache API provides a persistent storage mechanism for HTTP request and response object pairs that's used to make webpages load faster.                                                                                        |
-| [Origin Private File System (OPFS)](/en-US/docs/Web/API/File_System_API/Origin_private_file_system) | OPFS provides a file system that's private to the origin of the page and can be used to read and write directories and files.                                                                                                     |
+| [Cookies](/ko/docs/Web/HTTP/Cookies)                                                             | HTTP 쿠키는 웹 서버와 브라우저가 페이지 탐색 전반에 걸쳐 상태 정보를 저장하기 위해 서로에게 보내는 작은 데이터 조각입니다.                                                                                |
+| [Web Storage](/ko/docs/Web/API/Web_Storage_API)                                                  | Web Storage API는 웹페이지가 [`localStorage`](/ko/docs/Web/API/Window/localStorage) 및 [`sessionStorage`](/ko/docs/Web/API/Window/sessionStorage)를 포함하여 문자열 전용 키/값 쌍을 저장하는 방법을 제공합니다. |
+| [IndexedDB](/ko/docs/Web/API/IndexedDB_API)                                                      | IndexedDB는 대용량 데이터 구조를 브라우저에 저장하고 고성능 검색을 위해 인덱싱하는 웹 API입니다.                                                                                                         |
+| [Cache API](/ko/docs/Web/API/Cache)                                                              | Cache API는 웹페이지를 더 빠르게 로드하기 위한 HTTP 요청 및 응답 객체 쌍을 영구적으로 저장할 수 있는 방법을 제공합니다.                                                                                        |
+| [Origin Private File System (OPFS)](/ko/docs/Web/API/File_System_API/Origin_private_file_system) | OPFS는 페이지의 origin에 대한 비공개 파일 시스템을 제공하며 디렉터리와 파일을 읽고 쓰기 위해 사용할 수 있습니다.                                                                                                     |
 
-Note that, in addition to the above, browsers will store other types of data in the browser for an origin, such as [WebAssembly](/en-US/docs/WebAssembly) code caching.
+위의 기술들 외에도 브라우저는 [WebAssembly](/ko/docs/WebAssembly) 코드 캐싱과 같은 origin이 가진 다른 타입의 데이터도 브라우저에 저장합니다.
 
 ## 브라우저에 저장된 데이터가 유지됩니까?
 
-Data for an origin can be stored in two ways in a browser, _persistent_ and _best-effort_:
+한 origin의 데이터는 _persistent_, _best-effort_ 두 가지 방법으로 브라우저에 저장됩니다:
 
-- Best-effort: this is the way that data is stored by default. Best-effort data persists as long as the origin is below its quota, the device has enough storage space, and the user doesn't choose to delete the data via their browser's settings.
-- Persistent: an origin can opt-in to store its data in a persistent way. Data stored this way is only evicted, or deleted, if the user chooses to, by using their browser's settings. To learn more, see [When is data evicted](#when_is_data_evicted).
+- Best-effort: 기본적으로 데이터가 저장되는 방식입니다. origin이 할당량 미만을 쓰고 있고, 기기에 충분한 저장 공간이 있고, 사용자가 브라우저 설정을 통해 데이터 삭제를 선택하지 않는 한 Best-effort 상태의 데이터는 유지됩니다.
+- Persistent: 어떤 origin에 대해서 데이터를 persistent 방식으로 저장하게 할 수도 있습니다. 이 방식으로 저장된 데이터는 사용자가 브라우저 설정을 사용하여 선택한 경우에만 제거되거나 삭제됩니다. 자세한 내용은 [데이터는 언제 제거됩니까?](#데이터는_언제_제거됩니까)를 참조하세요.
 
-The data stored in the browser by an origin is best-effort by default. When using web technologies such as IndexedDB or Cache, the data is stored transparently without asking for the user's permission. Similarly, when the browser needs to evict best-effort data, it does so without interrupting the user.
+origin에 의해 브라우저에 저장된 데이터는 기본적으로 best-effort 모드를 적용합니다. 이 상태에서 IndexedDB나 Cache 등의 웹 기술을 사용하면 사용자의 허락을 구하지 않고 데이터가 저장됩니다. 마찬가지로, 브라우저가 best-effort 상태의 데이터를 제거해야 할 때도 사용자를 방해하지 않고 제거합니다.
 
-If, for any reason, developers need persistent storage (e.g., when building a web app that relies on critical data that isn't persisted anywhere else), they can do so by using the {{domxref("StorageManager.persist()", "navigator.storage.persist()")}} method of the {{domxref("Storage_API", "Storage API", "", "nocode")}}.
+어떤 이유로든 개발자에게 영구 저장소가 필요한 경우(예: 다른 곳에서는 유지되지 않는 중요한 데이터에 의존하는 웹 앱을 구축하는 경우) {{domxref("Storage_API", "Storage API", "", "nocode")}}의  {{domxref("StorageManager.persist()", "navigator.storage.persist()")}} 메서드를 사용할 수 있습니다.
 
-In Firefox, when a site chooses to use persistent storage, the user is notified with a UI popup that their permission is requested.
+Firefox에서는 사이트가 영구 저장소를 사용하기로 선택하면 사용자에게 권한이 요청된다는 UI 팝업이 표시됩니다.
 
-Safari and most Chromium-based browsers, such as Chrome or Edge, automatically approve or deny the request based on the user's history of interaction with the site and do not show any prompts to the user.
+Safari 및 Chrome이나 Edge와 같은 대부분의 Chromium 기반 브라우저는 사용자의 사이트 상호 작용 기록을 기반으로 요청을 자동으로 승인하거나 거부하며 사용자에게 어떠한 메시지도 표시하지 않습니다.
 
-Note that [research from the Chrome team](https://web.dev/articles/persistent-storage) shows that data is very rarely deleted by the browser. If a user visits a website regularly, there is very little chance that its stored data, even in best-effort mode, will get evicted by the browser.
+[Chrome 팀의 연구](https://web.dev/articles/pertant-storage)에 따르면 브라우저에서 데이터가 삭제되는 경우는 거의 없습니다. 사용자가 웹 사이트를 정기적으로 방문하는 경우 best-effort 모드에서도 저장된 데이터가 브라우저에 의해 제거될 가능성은 거의 없습니다.
 
-### Private browsing
+### 비공개 브라우징
 
-Note that in private browsing mode (also called _Incognito_ in Chrome, and _InPrivate_ in Edge), browsers may apply different quotas, and stored data is usually deleted when the private browsing mode ends.
+비공개 브라우징 모드(Chrome에서는 _Incognito_, Edge에서는 _InPrivate_라고도 함)에서는 브라우저가 다른 할당량을 적용할 수 있으며 일반적으로 비공개 브라우징 모드가 종료되면 저장된 데이터가 삭제됩니다.
 
 ## 얼마나 많은 데이터를 저장할 수 있습니까?
 
 ### Cookies
 
-Different browsers have different rules around how many cookies are allowed per origin and how much space these cookies can use on the disk. While cookies are useful for preserving some small shared state between the browser and the web server across page navigation, using cookies for storing data in the browser is not advised. Cookies are sent with each and every HTTP request, so storing data in cookies that could be stored by using another web technology unnecessarily increases the size of requests.
+브라우저마다 한 origin에 허용되는 쿠키 수와 그 쿠키가 디스크에서 사용할 수 있는 용량에 대한 규칙이 다릅니다. 쿠키는 페이지들을 탐색할 때 브라우저와 웹 서버 간의 일부 작은 상태값들을 공유하는데 유용하지만 브라우저에 데이터를 저장하기 위해 쿠키를 사용하는 것은 권장되지 않습니다. 쿠키는 모든 HTTP 리퀘스트에 함께 전송되므로 다른 웹 기술을 사용하여 저장할 수 있는 데이터를 쿠키에 저장하면 리퀘스트의 크기가 불필요하게 늘어납니다.
 
-Because cookies should not be used for storing data in the browser, cookie storage browser limits are not covered here.
+쿠키는 브라우저에 데이터를 저장할 때 사용되면 안 되기 때문에 쿠키 저장에 대한 각 브라우저들의 규칙은 여기에서 다루지 않습니다.
 
-### Web Storage
+### 웹 스토리지
 
-Web Storage, which can be accessed by using the {{domxref("Window.localStorage", "localStorage")}} and {{domxref("Window.sessionStorage", "sessionStorage")}} properties of the {{domxref("window")}} object, is limited to 10 MiB of data maximum on all browsers.
+웹 스토리지는 모든 브라우저에서 최대 10MiB의 데이터로 제한되며 {{domxref("window")}} 객체의 속성들인 {{domxref("Window.localStorage", "localStorage")}} 및 {{domxref("Window.sessionStorage", "sessionStorage")}}를 사용하여 액세스할 수 있습니다.
 
-Browsers can store up to 5 MiB of local storage, and 5 MiB of session storage per origin.
+브라우저는 origin 하나 당 최대 5MiB의 로컬 스토리지와 5MiB의 세션 스토리지를 저장할 수 있습니다.
 
-Once this limit is reached, browsers throw a `QuotaExceededError` exception which should be handled by using a {{jsxref("Statements/try...catch","try...catch")}} block.
+이 제한에 도달하면 브라우저는 {{jsxref("Statements/try...catch","try...catch")}} 블록을 사용하여 처리해야 하는 `QuotaExceededError` 예외를 발생시킵니다.
 
-### Other web technologies
+### 기타 웹 기술
 
-The data that's stored by using other web technologies, such as IndexedDB, Cache API, or File System API (which defines the Origin Private File System), is managed by a storage management system that's specific to each browser.
+IndexedDB, Cache API 또는 파일 시스템 API(Origin 개인 파일 시스템 정의)와 같은 다른 웹 기술을 사용하여 저장된 데이터는 각 브라우저의 특정 저장소 관리 시스템에 의해 관리됩니다.
 
-This system regulates all of the data that an origin stores using these APIs.
+이 시스템은 이러한 API를 사용하여 origin이 저장하는 모든 데이터를 제한합니다.
 
-Each browser determines, using whatever mechanism it chooses, the maximum amount of storage a given origin can use.
+각 브라우저는 각자의 메커니즘을 사용하여 특정 origin이 사용할 수 있는 최대 저장 용량을 결정합니다.
 
 #### Firefox
 
-In Firefox, the maximum storage space an origin can use in best-effort mode is whichever is the smaller of:
+Firefox에서 best-efford 모드인 origin이 사용할 수 있는 최대 저장 용량은 다음 두 가지 중 더 작은 값입니다.
 
-- 10% of the total disk size where the profile of the user is stored.
-- Or 10 GiB, which is the _group limit_ that Firefox applies to all origins that are part of the same {{Glossary("eTLD", "eTLD+1 domain")}}.
+- 사용자 프로필이 저장된 전체 디스크 크기의 10%입니다.
+- 아니면 Firefox가 같은 {{Glossary("eTLD", "eTLD+1 domain")}}에 해당하는 origin 전체에 적용하는 _그룹 한도_인 10GiB입니다.
 
-Origins for which persistent storage has been granted can store up to 50% of the total disk size, capped at 8 TiB, and are not subject to the eTLD+1 group limit.
+persistent 모드인 origin은 최대 8TiB 범위 내에서 총 디스크 크기의 최대 50%를 사용할 수 있으며 eTLD+1 그룹 제한이 적용되지 않습니다.
 
-For example, if the device has a 500 GiB hard drive, Firefox will allow an origin to store up to:
+예를 들어 장치에 500GiB 하드 드라이브가 있는 경우 Firefox에서 origin은 다음과 같이 저장할 수 있습니다.
 
-- In best-effort mode: 10 GiB of data, which is the eTLD+1 group limit.
-- In persistent mode: 250 GiB, which is 50% of the total disk size.
+- best-effort 모드: 10 GiB의 데이터, 이는 eTLD+1 그룹 한도입니다.
+- persistent 모드: 250 GiB, 이는 전체 디스크 크기의 50%입니다.
 
-Note that it might not actually be possible for the origin to reach its quota because it is calculated based on the hard drive **total** size, not the currently available disk space. This is done for security reasons, to avoid {{Glossary("fingerprinting")}}.
+origin이 할당량까지 사용하는 것은 실제로 불가능할 수도 있습니다. 할당량은 현재 사용 가능한 디스크 공간이 아닌 하드 드라이브의 **총** 크기를 기준으로 계산되기 때문입니다. {{Glossary("fingerprinting")}}을 방지하기 위한 보안상의 이유 때문입니다.
 
-#### Chrome and Chromium-based browsers
+#### Chrome 및 Chromium 기반 브라우저
 
-In browsers based on the [Chromium open-source project](https://www.chromium.org/Home/), including Chrome and Edge, an origin can store up to 60% of the total disk size in both persistent and best-effort modes.
+Chrome 및 Edge를 포함한 [Chromium 오픈 소스 프로젝트](https://www.chromium.org/Home/) 기반 브라우저에서 한 origin이 persistent, best-effort 모드 모두 전체 디스크 크기의 최대 60%를 이용할 수 있습니다.
 
-For example, if the device has a 1 TiB hard drive, the browser will allow an origin to use up to 600 GiB.
+예를 들어 장치에 1TiB 하드 드라이브가 있는 경우 한 origin이 최대 600GiB를 사용할 수 있습니다.
 
-Like with Firefox, because this quota is calculated based on the hard drive total size to avoid fingerprinting, an origin might not actually be able to reach its quota.
+Firefox와 마찬가지로 이 할당량은 핑거프린팅 방지를 위해 하드 드라이브 전체 크기를 기준으로 계산되므로 실제로 이 할당량까지 쓰지 못할 수도 있습니다.
 
 #### Safari
 
-Starting with macOS 14 and iOS 17, Safari allots up to around 20% of the total disk space for each origin. If the user has saved it as a web app on the Home Screen or the Dock, this limit is increased to up to 60% of the disk size. For privacy reasons, {{Glossary("Same-origin policy", "cross-origin")}} frames have a separate quota, amounting to roughly 1/10 of their parents.
+macOS 14와 iOS 17부터 Safari는 전체 디스크 공간의 약 20%를 각 origin에 할당합니다. 사용자가 홈 화면이나 dock에 웹 앱으로 저장한 경우 디스크 크기의 최대 60%까지 제한이 늘어납니다. 개인정보 보호를 위해 {{Glossary("Same-origin policy", "cross-origin")}} 창에는 상위 창의 대략 1/10 정도를 별도로 할당합니다.
 
-For instance, a macOS device with a 1 TiB drive will limit each origin to around 200 GiB. If the user stores a web app on its Dock, that will be alloted a greater limit of around 600 GiB.
+예를 들어 1TiB 드라이브가 있는 macOS 장치는 각 원본을 약 200GiB로 제한합니다. 사용자가 Dock에 웹 앱을 저장하는 경우 약 600GiB까지 제한이 풀립니다.
 
-Like other browsers, the exact limits enforced by the quota may vary as to avoid fingerprinting. Additionally, Safari also enforces an overall quota that stored data across all origins cannot grow beyond: 80% of disk size for each browser and web app, and 15% of disk size for each non-browser app that displays web content. More info on Safari's storage policies can be found on the [Webkit blog](https://www.webkit.org/blog/14403/updates-to-storage-policy/).
+다른 브라우저와 마찬가지로 핑거프린팅을 방지하기 위해 할당량에 적용되는 정확한 제한방법은 다를 수 있습니다. 또한 Safari는 모든 origin 통틀어 저장된 데이터가 각 브라우저 및 웹 앱의 경우에는 디스크 크기의 80%, 웹 콘텐츠를 표시하는 비 브라우저 앱의 경우 디스크 크기의 15%를 초과할 수 없도록 제한을 적용합니다. Safari의 저장소 정책에 대한 자세한 내용은 [Webkit 블로그](https://www.webkit.org/blog/14403/updates-to-storage-policy/)에서 확인할 수 있습니다.
 
-In earlier versions of Safari, an origin is given an initial 1 GiB quota. Once the origin reaches this limit, Safari asks the user for permission to let the origin store more data. This happens whether the origin stores data in best-effort mode or persistent mode.
+이전 버전의 Safari에서는 한 origin에 1GiB 할당량을 기본으로 제공됩니다. 특정 origin이 이 제한에 도달하면 Safari는 사용자에게 이 origin에 더 많은 데이터를 저장할 수 있도록 허가를 요청합니다. 이는 origin의 모드가 best-effort든 persistent이든 관계없이 요청됩니다.
 
-## How to check the available space?
+## 사용 가능한 공간을 어떻게 확인합니까?
 
-Web developers can check how much space is available for their origin and how much is being used by the origin with the {{domxref("StorageManager.estimate()", "navigator.storage.estimate()")}} method of the {{domxref("Storage_API", "Storage API", "", "nocode")}}.
+웹 개발자는 {{domxref("Storage_API", "Storage API", "", "nocode")}}의 {{domxref("StorageManager.estimate()", "navigator.storage.estimate()")}} 메서드를 사용하여 origin이 사용 가능한 용량과 사용 중인 용량을 확인할 수 있습니다.
 
-Note that this method only returns the estimated usage value, not the actual value. Some of the resources that are stored by an origin may be coming from other origins and browsers voluntarily pad the size of the cross-origin data when reporting total usage value.
+이 메서드는 실제 값이 아닌 예상 사용량 값만 반환합니다. 한 origin에 의해 저장된 리소스 중 일부는 다른 origin에서 올 수도 있으며 브라우저는 origin 사이에 교차된 데이터의 크기만큼 숫자를 키워서 총 사용량 값을 보고합니다.
 
-## What happens when an origin fills its quota?
+## origin이 할당량을 다 채우면 어떻게 됩니까?
 
-Attempting to store more than an origin's quota using IndexedDB, Cache, or OPFS, for example, fails with a `QuotaExceededError` exception.
+예를 들어 IndexedDB, Cache 또는 OPFS를 사용하여 origin에 할당된 양보다 많은 양을 저장하려고 시도하면 `QuotaExceededError`를 반환하고 실패하게 됩니다.
 
-Web developers should wrap JavaScript that writes to browser storage within {{jsxref("Statements/try...catch","try...catch")}} blocks. Freeing up space by deleting data before storing new data is also recommended.
+웹 개발자는 {{jsxref("Statements/try...catch","try...catch")}} 블록 내에 브라우저 저장소에 쓰는 JavaScript를 넣어야 합니다. 새로운 데이터를 저장하기 전에 데이터를 삭제하여 공간을 확보하는 것을 추천합니다.
 
 ## 데이터는 언제 제거됩니까?
 
-Data eviction is the process by which a browser deletes an origin's stored data.
+데이터 제거는 브라우저가 origin이 저장한 데이터를 삭제하는 프로세스입니다.
 
-Data eviction can happen in multiple cases:
+데이터 제거는 여러 경우에 발생할 수 있습니다:
 
-- When the device is running low on storage space, also known as _storage pressure_.
-- When all of the data stored in the browser (across all origins) exceeds the total amount of space the browser is willing to use on the device.
-- Proactively, for origins that aren't used regularly, which happens only in Safari.
+- 장치의 저장 공간이 부족한 경우로 _저장 압력_이 있는 경우.
+- 브라우저에 저장된 (모든 origin에 걸쳐서) 모든 데이터가 브라우저가 기기에서 사용하려는 총 공간을 초과하는 경우.
+- Safari에서는 정기적으로 사용되지 않는 originㄹ에 대해 사전에 제거합니다.
 
-### Storage pressure eviction
+### 저장 압력에 따른 제거
 
-When a device is running low on storage space, also known as _storage pressure_, there may come a point when the browser has less available space than it needs to store all of the origin's stored data.
+장치의 저장 공간이 부족한 경우를 _저장 압력_이라고도 하는데, 언젠가는 모든 origin들의 데이터를 저장하기에는 브라우저의 사용 가능한 공간이 부족한 시점이 올 수 있습니다.
 
-Browsers use a Least Recently Used (LRU) policy to deal with this scenario. The data from the least recently used origin is deleted. If storage pressure continues, the browser moves on to the second least recently used origin, and so on, until the problem is resolved.
+브라우저는 LRU(Least Recent Used) 정책을 사용하여 이 시나리오를 처리합니다. 최근에 가장 적게 사용된 origin의 데이터가 삭제됩니다. 저장 공간 부족이 계속되면 브라우저는 문제가 해결될 때까지 그 다음으로 최근에 사용되지 않은 origin을 삭제허려고 할 것입니다.
 
-This eviction mechanism only applies to origins that are not persistent and skips over origins that have been granted data persistence by using {{domxref("StorageManager.persist()", "navigator.storage.persist()")}}.
+이 제거 메커니즘은 persistent가 아닌 origin에만 적용되며 {{domxref("StorageManager.persist()", "navigator.storage.persist()")}}를 사용하여 persistent 모드가 부여된 origin들은 건너뜁니다.
 
-### Browser maximum storage exceeded eviction
+### 브라우저 최대 저장 용량 초과에 따른 제거
 
-Some browsers define a maximum storage space that they can use on the device's hard disk. For example, Chrome currently uses at most 80% of the total disk size.
+일부 브라우저는 최대 저장 공간을 기기의 하드 디스크에서 사용할 수 있는 용량을 통해 정의합니다. 예를 들어 Chrome은 현재 전체 디스크 크기의 최대 80%를 최대 저장 공간 값으로 사용합니다.
 
-This maximum storage size means that there may come a point at which the data stored by all of the combined origins exceeds the maximum size without any one origin being above its individual quota.
+이 최대 저장 용량은 단일 오리진이 개별 할당량을 초과하지 않고 결합된 모든 오리진에 의해 저장된 데이터가 최대 크기를 초과하는 지점이 발생할 수 있음을 의미합니다.
 
-When this happens, the browser starts evicting best-effort origins as described in [Storage pressure eviction](#storage_pressure_eviction).
+이런 일이 발생하면 브라우저는 [저장 압력 제거](#저장_압력_제거)에 설명된 대로 best-effort 모드인 origin들부터 제거하기 시작합니다.
 
-### Proactive eviction
+### 사전적 제거
 
-Safari proactively evicts data when cross-site tracking prevention is turned on. If an origin has no user interaction, such as click or tap, in the last seven days of browser use, its data created from script will be deleted. Cookies set by server are exempt from this eviction.
+Safari는 교차 사이트 추적 방지 기능이 켜져 있으면 사전에 데이터를 제거합니다. 지난 7일 동안 브라우저를 사용하면서 해당 origin에 클릭이나 탭과 같은 사용자 상호 작용이 없었으면 스크립트에서 생성된 데이터가 삭제됩니다. 서버에서 설정한 쿠키는 이 제거 규칙에서 제외됩니다.
 
-## How is data evicted?
+## 데이터는 어떻게 제거됩니까?
 
-When an origin's data is evicted by the browser, all of its data, not parts of it, is deleted at the same time. If the origin had stored data by using IndexedDB and the Cache API for example, then both types of data are deleted.
+origin의 데이터가 브라우저에 의해 제거되면 해당 데이터의 일부가 아닌 모든 데이터가 동시에 삭제됩니다. 예를 들어 origin이 IndexedDB 및 Cache API를 사용하여 데이터를 저장한 경우 두 가지 유형의 데이터가 모두 삭제됩니다.
 
-Only deleting some of the origin's data could cause inconsistency problems.
+원본 데이터 중 일부만 삭제하면 불일치 문제가 발생할 수 있습니다.
 
-## See also
+## 같이 보기
 
 - [Storage for the web on web.dev](https://web.dev/articles/storage-for-the-web)
 - [Persistent storage on web.dev](https://web.dev/articles/persistent-storage)
