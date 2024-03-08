@@ -25,7 +25,7 @@ Storage 규격에 설명된 사이트의 데이터가 저장되는 저장소 시
 
 본질적으로 모든 웹사이트는 데이터를 두는 자체 저장 공간을 갖습니다. 그러나 경우에 따라 사용자 에이전트는 단일 origin의 데이터를 여러 다른 버킷에 저장하기로 결정할 수도 있습니다. 예를 들어, 이 origin이 다른 서드파티 origin에 포함된 경우입니다.
 
-자세한 내용은 [브라우저가 다른 웹사이트의 데이터를 어떻게 분리합니까?](/ko/docs/Web/API/Storage_API/Storage_quotas_and_eviction_criteria#브라우저가_다른_웹사이트의_데이터를_어떻게_분리합니까)를 참조하십시오.
+자세한 내용은 [브라우저가 다른 웹사이트의 데이터를 어떻게 분리합니까?](/ko/docs/Web/API/Storage_API/Storage_quotas_and_eviction_criteria#브라우저가-다른-웹사이트의-데이터를-어떻게-분리합니까)를 참조하십시오.
 
 ### 버킷 모드
 
@@ -64,7 +64,7 @@ if (navigator.storage && navigator.storage.persist) {
 }
 ```
 
-자세한 내용은 [브라우저에 저장된 데이터가 유지됩니까?](/ko/docs/Web/API/Storage_API/Storage_quotas_and_eviction_criteria#브라우저에_저장된_데이터가_유지됩니까)를 참조하세요.
+자세한 내용은 [브라우저에 저장된 데이터가 유지됩니까?](/ko/docs/Web/API/Storage_API/Storage_quotas_and_eviction_criteria#브라우저에-저장된-데이터가-유지됩니까)를 참조하세요.
 
 ### 할당량과 사용량 추정치
 
@@ -83,7 +83,7 @@ navigator.storage.estimate().then((estimate) => {
 });
 ```
 
-origin이 저장할 수 있는 데이터의 양에 대한 자세한 내용은 [얼마나 많은 데이터를 저장할 수 있습니까?](/ko/docs/Web/API/Storage_API/Storage_quotas_and_eviction_criteria#얼마나_많은_데이터를_저장할_수_있습니까)를 참조하세요.
+origin이 저장할 수 있는 데이터의 양에 대한 자세한 내용은 [얼마나 많은 데이터를 저장할 수 있습니까?](/ko/docs/Web/API/Storage_API/Storage_quotas_and_eviction_criteria#얼마나-많은-데이터를-저장할-수-있습니까)를 참조하세요.
 
 ### 데이터 제거
 
@@ -93,7 +93,7 @@ origin이 저장한 데이터를 지울 때, origin의 버킷은 단일 개체�
 
 버킷이 `"persistent"`로 설정된 경우, 그 데이터를 저장한 origin이나 사용자가 명시적으로 삭제하지 않는 한 사용자 에이전트에 의해 내용이 삭제되지 않습니다. 사용자가 "캐시 지우기" 또는 "최근 기록 지우기" 옵션을 선택하는 시나리오도 포함됩니다. 이 때는 사용자에게 persistent 사이트 저장소 버킷을 제거할 권한을 명시적으로 요청합니다.
 
-자세한 내용은 [데이터는 언제 제거됩니까?](/ko/docs/Web/API/Storage_API/Storage_quotas_and_eviction_criteria#데이터는_언제_제거됩니까)를 참조하세요.
+자세한 내용은 [데이터는 언제 제거됩니까?](/ko/docs/Web/API/Storage_API/Storage_quotas_and_eviction_criteria#데이터는-언제-제거됩니까)를 참조하세요.
 
 ## 인터페이스
 
